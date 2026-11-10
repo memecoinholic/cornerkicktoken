@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#101810" />
+  <title>CORNER KICK — Own the Moment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,600;1,700&display=swap" rel="stylesheet">
+  <style>
+
+    @font-face {
+      font-family: "Matcha Style";
+      src: url("fonts/Matcha-Style.ttf") format("truetype");
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    :root {
+      --lime: #b7ff35;
+      --ink: #101810;
+      --white: #f7f8f2;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; background: var(--ink); color: var(--white); }
+    body { font-family: "DM Sans", sans-serif; overflow-x: hidden; }
+    .page {
+      min-height: 100svh;
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse at 50% 100%, rgba(183,255,53,.12), transparent 48%),
+        #101810;
+    }
+    .topbar {
+      position: absolute; z-index: 5; inset: 0 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: clamp(18px, 3vw, 34px) clamp(20px, 5vw, 76px);
+    }
+    .brand {
+      display: flex; align-items: center; gap: 11px;
+      color: var(--white); text-decoration: none;
+      font-family: "Barlow Condensed", sans-serif;
+      font-size: clamp(24px, 3vw, 34px); font-weight: 900; letter-spacing: .04em;
+    }
+    .brand-mark {
+      width: 13px; height: 13px; background: var(--lime);
+      transform: rotate(45deg); box-shadow: 0 0 22px #b7ff3580;
+    }
+    .hero {
+      min-height: 100svh; position: relative;
+      display: grid; place-items: center;
+      padding: 100px 20px 40px;
+    }
+    .hero-art {
+      position: absolute; inset: 0; z-index: -2;
+      display: grid; place-items: center; overflow: hidden;
+    }
+    .hero-art img {
+      width: 100%; height: 100%; object-fit: cover; object-position: center center;
+      display: block;
+    }
+    .hero-art::after {
+      content: ""; position: absolute; inset: 0;
+      background:
+        linear-gradient(180deg, rgba(5,12,9,.54) 0%, transparent 24%, transparent 62%, rgba(5,12,9,.48) 100%),
+        linear-gradient(90deg, rgba(5,12,9,.18), transparent 35%, transparent 70%, rgba(5,12,9,.12));
+      pointer-events: none;
+    }
+    .hero-copy {
+      position: absolute; z-index: 2; top: clamp(88px, 11vh, 124px);
+      left: 50%; transform: translateX(-50%); width: min(92%, 850px);
+      text-align: center; pointer-events: none;
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      color: var(--lime); font-size: 10px; font-weight: 800;
+      letter-spacing: .28em; text-transform: uppercase;
+      text-shadow: 0 2px 12px rgba(0,0,0,.5);
+    }
+    .eyebrow::before, .eyebrow::after {
+      content: ""; width: 24px; height: 1px; background: var(--lime);
+    }
+    h1 {
+      display: flex; justify-content: center; align-items: baseline; gap: .16em;
+      margin: 10px 0 0; line-height: .82; text-transform: uppercase;
+      text-shadow: 0 5px 28px rgba(0,0,0,.28);
+      white-space: nowrap;
+    }
+    h1 .word-corner {
+      font-family: "Matcha Style", cursive;
+      font-size: clamp(76px, 10.8vw, 148px); font-weight: 900;
+      letter-spacing: -.045em; color: #fff;
+    }
+    h1 .word-kicks {
+      font-family: "DM Sans", sans-serif; font-style: italic;
+      font-size: clamp(58px, 8.2vw, 112px); font-weight: 800;
+      letter-spacing: -.075em; color: var(--lime);
+    }
+    .ticker {
+      display: inline-flex; align-items: center; gap: 7px; margin-top: 17px;
+      padding: 7px 12px; border: 1px solid rgba(183,255,53,.7);
+      border-radius: 999px; background: rgba(8,18,10,.38);
+      color: white; font-size: 10px; font-weight: 800; letter-spacing: .17em;
+      box-shadow: 0 4px 20px rgba(0,0,0,.15);
+    }
+    .ticker b { color: var(--lime); }
+    .intro {
+      margin: 13px auto 0; max-width: 540px; color: rgba(255,255,255,.92);
+      font-size: 12px; line-height: 1.75; font-weight: 600;
+      text-shadow: 0 2px 12px rgba(0,0,0,.8);
+    }
+    .hint {
+      position: absolute; z-index: 3; right: clamp(22px, 5vw, 70px);
+      bottom: clamp(28px, 5vh, 58px); display: flex; align-items: center; gap: 12px;
+      font-size: 10px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase;
+      color: white; text-shadow: 0 2px 12px #000;
+      animation: hint-attention 2s ease-in-out infinite;
+      will-change: opacity;
+    }
+    /* The hint fades in and out in sync with the ball's 2-second white glow. */
+    @keyframes hint-attention {
+      0%, 38%, 100% { opacity: .28; }
+      10%, 25% { opacity: 1; }
+    }
+    .hint-line { width: 38px; height: 1px; background: var(--lime); }
+    .hint { animation: hint-pulse 2s ease-in-out infinite; }
+    @keyframes hint-pulse { 0%,100% { opacity: .35; } 50% { opacity: 1; } }
+    /* HOTSPOT POSITION: adjust --spot-x and --spot-y to move the marker. */
+    .ball-hotspot {
+      --spot-x: 67.6%;
+      --spot-y: 77.6%;
+      position: absolute; z-index: 4;
+      left: var(--spot-x); top: var(--spot-y);
+      /* Width is calculated from the background image's rendered scale in JS. */
+      width: var(--marker-size, 326px); height: var(--marker-size, 326px);
+      aspect-ratio: 1;
+      transform: translate(-50%, -50%);
+      border: 0; border-radius: 50%; padding: 0;
+      background: transparent; cursor: pointer;
+      display: grid; place-items: center;
+      -webkit-tap-highlight-color: transparent;
+      cursor: none;
+    }
+    .ball-hotspot img {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      display: block;
+      /* Keep the artwork tied to the exact marker diameter. */
+      width: 100%;
+      height: 100%;
+      max-width: none;
+      max-height: none;
+      object-fit: contain;
+      object-position: center;
+      transform: translate(-50%, -50%) scale(1);
+      pointer-events: none;
+      transition: filter .25s ease, transform .25s ease;
+      /* Brief white glow repeats every 2 seconds to hint that the ball is clickable. */
+      animation: ball-attention 2s infinite;
+    }
+    .ball-hotspot:hover img,
+    .ball-hotspot:focus-visible img {
+      animation: none;
+      filter: drop-shadow(0 0 10px rgba(255,255,255,.95))
+              drop-shadow(0 0 24px rgba(255,255,255,.8))
+              drop-shadow(0 0 42px rgba(255,255,255,.45));
+      transform: translate(-50%, -50%) scale(1.04);
+    }
+    @keyframes ball-attention {
+      0%, 38%, 100% {
+        filter: drop-shadow(0 0 0 rgba(255,255,255,0));
+      }
+      10%, 25% {
+        filter: drop-shadow(0 0 10px rgba(255,255,255,.95))
+                drop-shadow(0 0 24px rgba(255,255,255,.8))
+                drop-shadow(0 0 42px rgba(255,255,255,.45));
+      }
+    }
+    .click-cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 30;
+      pointer-events: none;
+      opacity: 0;
+      transform: translate(14px, 14px) scale(.9);
+      transition: opacity .16s ease, transform .16s ease;
+      padding: 8px 11px;
+      border: 1px solid rgba(255,255,255,.85);
+      border-radius: 3px;
+      background: rgba(10,16,12,.82);
+      color: #fff;
+      font: 800 10px/1 \"DM Sans\", sans-serif;
+      letter-spacing: .18em;
+      white-space: nowrap;
+      text-shadow: 0 1px 8px rgba(255,255,255,.35);
+      backdrop-filter: blur(6px);
+    }
+    .click-cursor.is-visible {
+      opacity: 1;
+      transform: translate(14px, 14px) scale(1);
+    }
+    @media (hover: none), (pointer: coarse) {
+      .ball-hotspot { cursor: pointer; }
+      .click-cursor { display: none; }
+    }
+    .ball-hotspot .pulse {
+      position: absolute; inset: 0; border: 2px solid var(--lime);
+      border-radius: 50%; animation: pulse 2s ease-out infinite;
+    }
+    .ball-hotspot .dot {
+      width: 13px; height: 13px; border-radius: 50%;
+      background: var(--lime); border: 2px solid #fff;
+      box-shadow: 0 0 0 5px rgba(183,255,53,.22), 0 0 22px rgba(183,255,53,.9);
+      transition: transform .2s ease;
+    }
+    .ball-hotspot:hover .dot, .ball-hotspot:focus-visible .dot { transform: scale(1.35); }
+    .ball-hotspot:focus-visible { outline: 2px solid white; outline-offset: 8px; }
+    @keyframes pulse {
+      0% { transform: scale(.45); opacity: .95; }
+      100% { transform: scale(1.9); opacity: 0; }
+    }
+    .modal-backdrop {
+      position: fixed; inset: 0; z-index: 20; display: grid; place-items: center;
+      padding: 20px; background: rgba(3,8,5,.78); backdrop-filter: blur(10px);
+      opacity: 0; visibility: hidden; transition: opacity .25s ease, visibility .25s ease;
+    }
+    .modal-backdrop.is-open { opacity: 1; visibility: visible; }
+    .modal {
+      position: relative; width: min(60vw, 1100px); aspect-ratio: 16 / 9;
+      overflow: hidden; background: #111; border-radius: 4px;
+      box-shadow: 0 24px 90px #000b; transform: translateY(16px) scale(.98);
+      transition: transform .25s ease;
+    }
+    .is-open .modal { transform: translateY(0) scale(1); }
+    .modal-image {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      display: block; object-fit: cover;
+    }
+    .modal::after {
+      content: ""; position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(115deg, rgba(0,0,0,.55), transparent 58%);
+    }
+    .signal-status {
+      position: absolute; z-index: 2; top: clamp(12px, 2.2vw, 28px);
+      left: clamp(14px, 2.5vw, 34px); display: flex; align-items: center;
+      gap: clamp(9px, 1.4vw, 18px); color: #fff;
+      font-family: "DM Sans", sans-serif; text-transform: uppercase;
+    }
+    .signal-label {
+      font-family: "Matcha Style", cursive;
+      font-size: clamp(17px, 2.1vw, 29px);
+      font-weight: normal;
+      letter-spacing: .025em;
+      line-height: 1;
+      white-space: nowrap;
+      text-shadow: 0 2px 10px rgba(0,0,0,.45);
+    }
+    .signal-countdown {
+      font-size: clamp(13px, 1.5vw, 21px); font-weight: 800;
+      letter-spacing: .08em; font-variant-numeric: tabular-nums;
+      color: var(--lime); white-space: nowrap;
+    }
+    .close {
+      position: absolute; z-index: 3; top: clamp(8px, 1.4vw, 18px);
+      right: clamp(8px, 1.4vw, 18px); width: clamp(28px, 3vw, 40px);
+      aspect-ratio: 1; border: 1px solid rgba(255,255,255,.7);
+      border-radius: 50%; background: rgba(0,0,0,.4); color: #fff;
+      font-size: clamp(17px, 2vw, 25px); line-height: 1; cursor: pointer;
+      backdrop-filter: blur(5px);
+    }
+    .join-here-link {
+      position: absolute;
+      z-index: 4;
+      right: clamp(12px, 2vw, 26px);
+      bottom: clamp(12px, 2vw, 26px);
+      display: block;
+      width: clamp(120px, 24%, 260px);
+      line-height: 0;
+      border-radius: 18px;
+      cursor: pointer;
+      transition: filter .22s ease, transform .22s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .join-here-link img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    .join-here-link:hover,
+    .join-here-link:focus-visible {
+      filter:
+        drop-shadow(0 0 5px rgba(255,255,255,.95))
+        drop-shadow(0 0 14px rgba(255,255,255,.8))
+        drop-shadow(0 0 28px rgba(255,255,255,.45));
+      transform: scale(1.045);
+      outline: none;
+    }
+    .join-here-link:focus-visible {
+      outline: 2px solid white;
+      outline-offset: 5px;
+    }
+
+    /* Appears only after unlock; one slow left-to-right pass every 10 seconds. */
+    .unlock-sweep {
+      position: fixed;
+      z-index: 30;
+      left: 0;
+      top: 50%;
+      width: min(33.333vw, 440px);
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+      transform: translate3d(-110%, -50%, 0);
+    }
+    .unlock-sweep img {
+      display: block;
+      width: 100%;
+      height: auto;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+    .unlock-sweep.is-running {
+      visibility: visible;
+      animation: unlock-sweep-travel 10s linear infinite;
+    }
+    @keyframes unlock-sweep-travel {
+      0%   { opacity: 0; transform: translate3d(-110%, -50%, 0); }
+      8%   { opacity: 1; }
+      88%  { opacity: 1; }
+      100% { opacity: 0; transform: translate3d(310%, -50%, 0); }
+    }
+    @media (max-width: 700px) {
+      .unlock-sweep { width: 33.333vw; }
+    }
+
+    /* TWEET-TO-UNLOCK */
+    .modal-content {
+      position: absolute; inset: 0;
+      transition: filter .45s ease, opacity .45s ease;
+    }
+    .modal.is-locked .modal-content {
+      filter: blur(13px);
+      opacity: .62;
+      pointer-events: none;
+      user-select: none;
+    }
+    .lock-screen {
+      position: absolute; inset: 0; z-index: 6;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: clamp(8px, 1.4vw, 18px); padding: 18px;
+      color: #fff; text-align: center;
+      background: rgba(3, 9, 5, .30);
+      transition: opacity .35s ease, visibility .35s ease;
+    }
+    .lock-icon { width: clamp(30px, 5vw, 64px); height: auto; filter: drop-shadow(0 3px 14px #0009); }
+    .lock-title {
+      margin: 0; font: normal clamp(17px, 2.6vw, 34px)/1 "Matcha Style", sans-serif;
+      letter-spacing: 0; text-transform: uppercase;
+      text-shadow: 0 2px 12px #000;
+    }
+    .lock-copy {
+      max-width: 440px; margin: 0; font-size: clamp(9px, 1vw, 13px);
+      line-height: 1.5; font-weight: 700; text-shadow: 0 2px 8px #000;
+    }
+    .unlock-button, .confirm-unlock {
+      border: 1px solid rgba(255,255,255,.9); border-radius: 3px;
+      padding: clamp(9px, 1.2vw, 14px) clamp(20px, 2.8vw, 36px);
+      background: var(--lime); color: #111b0d;
+      font: 900 clamp(11px, 1.25vw, 16px)/1 "DM Sans", sans-serif;
+      letter-spacing: .12em; cursor: pointer;
+      box-shadow: 0 5px 24px rgba(0,0,0,.3);
+      transition: transform .2s ease, filter .2s ease;
+    }
+    .unlock-button:hover, .confirm-unlock:hover {
+      transform: translateY(-2px) scale(1.035);
+      filter: drop-shadow(0 0 10px rgba(255,255,255,.85));
+    }
+    .confirm-unlock { display: none; background: #fff; }
+    .lock-screen.tweet-opened .confirm-unlock { display: inline-block; }
+    .lock-screen.tweet-opened .unlock-button { display: none; }
+    .lock-screen.is-unlocked { opacity: 0; visibility: hidden; pointer-events: none; }
+    @media (max-width: 700px) {
+      .lock-icon { width: 32px; }
+      .lock-copy { max-width: 270px; }
+      .unlock-button, .confirm-unlock { padding: 9px 16px; }
+    }
+    @media (max-width: 700px) {
+      .modal { width: min(94vw, 700px); }
+      .signal-status { gap: 8px; }
+      .signal-label { letter-spacing: .1em; }
+    }
+
+    /* PRE-ENTRY SCREEN */
+    body.entry-locked { overflow: hidden; }
+    .entry-locked .page,
+    .entry-locked .modal-backdrop,
+    .entry-locked .click-cursor { visibility: hidden; }
+    .entry-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      background: #071008 url("images/bgblur.webp") center / cover no-repeat;
+      opacity: 1;
+      visibility: visible;
+      transition: opacity .65s ease, visibility .65s ease;
+    }
+    .entry-screen::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(4, 12, 6, .28);
+      backdrop-filter: blur(2px);
+    }
+    .entry-screen.is-leaving {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .entry-button {
+      position: relative;
+      z-index: 1;
+      display: block;
+      width: min(78vw, 1040px);
+      line-height: 0;
+      border: 0;
+      padding: 0;
+      background: transparent;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: transform .25s ease, filter .25s ease;
+      animation: entry-button-breathe 2.8s ease-in-out infinite;
+    }
+    .entry-button img {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+    .entry-button:hover,
+    .entry-button:focus-visible {
+      filter: drop-shadow(0 0 8px rgba(255,255,255,.98))
+              drop-shadow(0 0 22px rgba(255,255,255,.82))
+              drop-shadow(0 0 48px rgba(255,255,255,.55));
+      transform: scale(1.035);
+      outline: none;
+      animation: none;
+    }
+    .entry-button:focus-visible {
+      outline: 2px solid white;
+      outline-offset: 12px;
+    }
+    @keyframes entry-button-breathe {
+      0%, 100% { filter: drop-shadow(0 0 0 rgba(255,255,255,0)); transform: scale(1); }
+      50% { filter: drop-shadow(0 0 13px rgba(255,255,255,.48)); transform: scale(1.012); }
+    }
+    @media (max-width: 700px) {
+      .entry-button { width: min(90vw, 760px); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .entry-button { animation: none; }
+      .entry-screen, .entry-button { transition: none; }
+    }
+
+    @media (max-width: 700px) {
+      .hero { padding: 90px 16px 30px; min-height: 100svh; }
+      .hero-art img { object-position: 54% center; }
+      .hero-copy { top: 105px; width: 94%; }
+      h1 { gap: .12em; }
+      h1 .word-corner { font-size: clamp(54px, 12vw, 82px); }
+      h1 .word-kicks { font-size: clamp(44px, 10vw, 68px); }
+      .intro { max-width: 340px; font-size: 10px; }
+      .ball-hotspot { --spot-x: 68%; --spot-y: 77%; }
+      .hint { font-size: 8px; }
+      .modal { padding: 28px 24px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+  
+    .contract-image-copy {
+      position: relative; display: block; width: min(78vw, 680px); max-width: 100%;
+      margin: -3px auto 0; padding: 0; border: 0; background: transparent; pointer-events: auto;
+      line-height: 0; cursor: pointer; -webkit-tap-highlight-color: transparent;
+      transition: transform .25s ease, filter .25s ease;
+    }
+    .contract-image-copy img { display: block; width: 100%; height: auto; object-fit: contain; pointer-events: none; }\n    .contract-image-copy:hover img, .contract-image-copy:focus-visible img { filter: brightness(1.08); }
+    .contract-image-copy:hover, .contract-image-copy:focus-visible,
+    .contract-image-copy.is-active {
+      transform: scale(1.035);
+      filter: drop-shadow(0 0 10px rgba(255,255,255,.95))
+              drop-shadow(0 0 24px rgba(255,255,255,.8))
+              drop-shadow(0 0 42px rgba(255,255,255,.45));
+      outline: none;
+    }
+    .contract-image-copy:active { transform: scale(1.035); }
+    .contract-copy-toast {
+      position: fixed;
+      z-index: 1001;
+      left: 22px;
+      bottom: 22px;
+      width: min(190px, 34vw);
+      height: auto;
+      display: block;
+      transform: translateY(12px) scale(.96);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity .22s ease, transform .22s ease, visibility .22s ease;
+      filter: drop-shadow(0 5px 16px rgba(0,0,0,.35));
+    }
+    .contract-copy-toast img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    .contract-copy-toast.is-visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+    }
+    @media (max-width: 700px) {
+      .contract-image-copy { width: min(90vw, 520px); margin-top: -3px; }
+      .contract-copy-toast { left: 12px; bottom: 12px; width: min(160px, 42vw); }
+    }
+
+  
+.social-links{position:fixed;z-index:40;left:clamp(22px,5vw,70px);bottom:clamp(28px,5vh,58px);display:flex;align-items:center;gap:12px}
+.social-link{width:25px;height:25px;display:grid;place-items:center;color:#fff;text-decoration:none;opacity:.92;transform:scale(1);filter:drop-shadow(0 0 0 rgba(255,255,255,0));transition:transform .28s cubic-bezier(.2,.8,.2,1),filter .28s ease,opacity .28s ease;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.social-link svg{display:block;width:100%;height:100%;fill:currentColor}
+.social-link:hover,.social-link:focus-visible,.social-link.is-active{opacity:1;transform:scale(1.16);filter:drop-shadow(0 0 5px rgba(255,255,255,.98)) drop-shadow(0 0 13px rgba(255,255,255,.8)) drop-shadow(0 0 23px rgba(255,255,255,.42));outline:none}
+.social-link:active{transform:scale(.94)}
+.social-link:focus-visible{outline:1px solid rgba(255,255,255,.9);outline-offset:5px;border-radius:3px}
+.contract-copy-toast{bottom:66px}
+@media(max-width:700px){.social-links{left:16px;bottom:clamp(28px,5vh,58px);gap:11px}.social-link{width:23px;height:23px}.contract-copy-toast{left:12px;bottom:58px}}
+
+</style>
+</head>
+<body class="entry-locked">
+  <!-- Pre-entry screen: click to enter the site and start the stadium music. -->
+  <div class="entry-screen" id="entryScreen">
+    <button class="entry-button" id="enterButton" type="button" aria-label="Enter the stadium">
+      <img src="images/button.png" alt="ENTER THE STADIUM">
+    </button>
+  </div>
+  <audio id="stadiumMusic" src="sound/stadium.mp3" preload="auto" loop></audio>
+  <audio id="touchSound" src="sound/touch.mp3" preload="auto"></audio>
+
+  <main class="page">
+    <header class="topbar" aria-hidden="true"></header>
+
+    <section class="hero" aria-label="Corner Kick interactive landing page">
+      <div class="hero-art">
+        <img src="images/bg.webp" alt="A football player taking a corner kick in a packed stadium">
+      </div>
+
+      <div class="hero-copy">
+        <div class="eyebrow">Football meets meme culture</div>
+        <h1><span class="word-corner">Corner</span><span class="word-kicks">Kicks</span></h1>
+        <div class="ticker">FREE CORNER SIGNAL <b>EVERYDAY</b></div>
+        <p class="intro">Corner Kick brings football fans and meme culture together through match-by-match corner analysis and predictions. Read the game, spot the angles, and make every corner count.</p>
+        <button class="contract-image-copy" id="contractImageCopy" type="button" aria-label="Copy contract address">
+          <img src="images/ca.png"
+        </button>
+      </div>
+
+      <button class="ball-hotspot" id="ballHotspot" type="button" aria-label="Explore the football">
+        <img src="images/ball.png" alt="" draggable="false">
+      </button>
+
+      <div class="hint"><span class="hint-line"></span>Tap the ball to explore</div>
+    </section>
+  </main>
+
+  <!-- Assets: images/bg.webp, images/bgblur.webp, images/button.png, images/ball.png, images/popup.png, images/join-here.png, sound/stadium.mp3, fonts/Matcha-Style.ttf. -->
+  <div class="unlock-sweep" id="unlockSweep" aria-hidden="true">
+    <img src="images/popup2.png" alt="" draggable="false">
+  </div>
+
+  <div class="modal-backdrop" id="popup" aria-hidden="true">
+    <section class="modal is-locked" id="signalModal" role="dialog" aria-modal="true" aria-label="Locked next signal">
+      <div class="modal-content" id="modalContent">
+        <img class="modal-image" src="images/popup.png" alt="Next signal preview">
+        <div class="signal-status">
+          <span class="signal-label">NEXT SIGNAL</span>
+          <span class="signal-countdown" id="signalCountdown">08:00:00</span>
+        </div>
+        <button class="close" id="closePopup" type="button" aria-label="Close popup">&times;</button>
+        <a class="join-here-link" href="https://1x-bet.mobi?bf=93dd756bf09b4_13427363375" target="_blank" rel="noopener noreferrer" aria-label="Join us on X">
+          <img src="images/join-here.png" alt="Join here">
+        </a>
+      </div>
+      <div class="lock-screen" id="lockScreen">
+        <svg class="lock-icon" viewBox="0 0 64 72" fill="none" aria-hidden="true">
+          <path d="M15 29V19C15 9.6 22.6 2 32 2S49 9.6 49 19V29" stroke="white" stroke-width="6" stroke-linecap="round"/>
+          <rect x="5" y="27" width="54" height="42" rx="7" fill="#B7FF35" stroke="white" stroke-width="3"/>
+          <circle cx="32" cy="45" r="5" fill="#14200F"/><path d="M32 49V57" stroke="#14200F" stroke-width="4" stroke-linecap="round"/>
+        </svg>
+        <h2 class="lock-title">THE SIGNAL IS LOCKED</h2>
+        <p class="lock-copy">Tweet about CORNER KICK to unlock the next signal.</p>
+        <button class="unlock-button" id="unlockButton" type="button">UNLOCK IT</button>
+        <button class="confirm-unlock" id="confirmUnlock" type="button">I'VE TWEETED — UNLOCK</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="click-cursor" id="clickCursor" aria-hidden="true">CLICK HERE</div>
+  <div class="contract-copy-toast" id="contractCopyToast" role="status" aria-live="polite"><img src="images/copied.png" alt="Contract address copied"></div>
+
+<nav class="social-links" aria-label="Social media links">
+  <a class="social-link" href="https://t.me/cornerkickcoin" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.7 4.3 18.6 19c-.2 1-.8 1.2-1.6.8l-4.5-3.3-2.2 2.1c-.2.2-.4.4-.8.4l.3-4.6 8.4-7.6c.4-.3-.1-.5-.6-.2L7.2 13.3l-4.4-1.4c-1-.3-1-1 .2-1.5L20.2 3.6c.9-.3 1.7.2 1.5.7Z"/></svg>
+  </a>
+  <a class="social-link" href="https://x.com/cornerkickcoin" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23.2 22h-6.3L12 14.9 5.8 22H2.7l7.3-8.4L2.2 2h6.5l4.5 6.7L18.9 2Zm-1.1 18h1.7L7.7 3.9H5.9L17.8 20Z"/></svg>
+  </a>
+</nav>
+
+
+  <script>
+    
+// Smooth glow and scale feedback when social icons are tapped on mobile.
+document.querySelectorAll(".social-link").forEach((link) => {
+  let releaseTimer;
+  link.addEventListener("pointerdown", () => {
+    window.clearTimeout(releaseTimer);
+    link.classList.add("is-active");
+  });
+  const release = () => {
+    window.clearTimeout(releaseTimer);
+    releaseTimer = window.setTimeout(() => link.classList.remove("is-active"), 420);
+  };
+  link.addEventListener("pointerup", release);
+  link.addEventListener("pointercancel", release);
+  link.addEventListener("pointerleave", release);
+});
+
+// Enter button starts the site and stadium soundtrack after a user gesture.
+    const entryScreen = document.getElementById("entryScreen");
+    const enterButton = document.getElementById("enterButton");
+    const stadiumMusic = document.getElementById("stadiumMusic");
+    const touchSound = document.getElementById("touchSound");
+
+    // Play a short UI sound on every click anywhere on the page.
+    // Clone the audio element so rapid clicks can overlap without cutting off.
+    document.addEventListener("click", () => {
+      const clickSound = touchSound.cloneNode();
+      clickSound.volume = 0.7;
+      clickSound.play().catch(() => {
+        // Browsers may block playback until the visitor has interacted once.
+      });
+      clickSound.addEventListener("ended", () => clickSound.remove(), { once: true });
+    }, true);
+
+
+
+    // Copy the contract address represented by the image.
+    const contractImageCopy = document.getElementById("contractImageCopy");
+    const contractCopyToast = document.getElementById("contractCopyToast");
+    const CONTRACT_ADDRESS_IMAGE_TEXT = "0x000000000000000";
+    let contractToastTimer;
+
+
+    // Match desktop hover glow with a brief tap effect on mobile.
+    contractImageCopy.addEventListener("pointerdown", () => {
+      contractImageCopy.classList.add("is-active");
+    });
+    const clearContractImageActive = () => contractImageCopy.classList.remove("is-active");
+    contractImageCopy.addEventListener("pointerup", clearContractImageActive);
+    contractImageCopy.addEventListener("pointercancel", clearContractImageActive);
+    contractImageCopy.addEventListener("pointerleave", clearContractImageActive);
+
+    contractImageCopy.addEventListener("click", async () => {
+      let copied = false;
+      try {
+        await navigator.clipboard.writeText(CONTRACT_ADDRESS_IMAGE_TEXT);
+        copied = true;
+      } catch (error) {
+        const fallback = document.createElement("textarea");
+        fallback.value = CONTRACT_ADDRESS_IMAGE_TEXT;
+        fallback.setAttribute("readonly", "");
+        fallback.style.position = "fixed";
+        fallback.style.opacity = "0";
+        document.body.appendChild(fallback);
+        fallback.select();
+        try { copied = document.execCommand("copy"); } catch (_) {}
+        fallback.remove();
+      }
+      if (copied) {
+        contractCopyToast.classList.add("is-visible");
+        window.clearTimeout(contractToastTimer);
+        contractToastTimer = window.setTimeout(() => contractCopyToast.classList.remove("is-visible"), 1800);
+      }
+    });
+
+
+    enterButton.addEventListener("click", async () => {
+      // Start audio directly from the click so browser autoplay policies allow playback.
+      try {
+        stadiumMusic.volume = 0.75;
+        await stadiumMusic.play();
+      } catch (error) {
+        console.warn("Stadium music could not start:", error);
+      }
+      document.body.classList.remove("entry-locked");
+      document.body.classList.add("site-entered");
+      entryScreen.classList.add("is-leaving");
+      window.setTimeout(() => entryScreen.remove(), 700);
+    });
+
+    // COUNTDOWN SETTINGS
+    // Set this once to the exact date/time your website officially launches.
+    // Keep this timestamp unchanged during maintenance or redeployments.
+    // All visitors see the same countdown phase; it repeats every 10 hours.
+    const COUNTDOWN_CYCLE_HOURS = 10;
+    const COUNTDOWN_LAUNCH_AT = "2026-11-03T04:19:00Z"; // 12:19 WITA, 3 Nov 2026
+    const COUNTDOWN_LAUNCH_TIMESTAMP = new Date(COUNTDOWN_LAUNCH_AT).getTime();
+
+    const hotspot = document.getElementById("ballHotspot");
+    const clickCursor = document.getElementById("clickCursor");
+    const hero = document.querySelector(".hero");
+    const backgroundImage = document.querySelector(".hero-art img");
+
+    // Lock BOTH the ball position and its diameter to the source background artwork.
+    // The marker is 19.5% of the original background width (326px on a 1672px image).
+    // object-fit: cover scaling/cropping is mirrored here, so resizing the browser
+    // changes the ball by exactly the same scale as the marking in the background.
+    function positionBallOnBackground() {
+      if (!hero || !backgroundImage || !backgroundImage.naturalWidth) return;
+
+      const heroWidth = hero.clientWidth;
+      const heroHeight = hero.clientHeight;
+      const sourceWidth = backgroundImage.naturalWidth;
+      const sourceHeight = backgroundImage.naturalHeight;
+      const coverScale = Math.max(heroWidth / sourceWidth, heroHeight / sourceHeight);
+      const renderedWidth = sourceWidth * coverScale;
+      const renderedHeight = sourceHeight * coverScale;
+
+      const mobile = window.matchMedia("(max-width: 700px)").matches;
+      const objectPositionX = mobile ? 0.54 : 0.5;
+      const objectPositionY = 0.5;
+      const imageOffsetX = (heroWidth - renderedWidth) * objectPositionX;
+      const imageOffsetY = (heroHeight - renderedHeight) * objectPositionY;
+
+      // Center point of the marking, expressed in original image coordinates.
+      const markerX = mobile ? 0.68 : 0.676;
+      const markerY = mobile ? 0.77 : 0.776;
+      const x = imageOffsetX + sourceWidth * coverScale * markerX;
+      const y = imageOffsetY + sourceHeight * coverScale * markerY;
+
+      // 326px marker on the 1672px-wide reference background = 19.5%.
+      const markerDiameterInSourcePixels = sourceWidth * 0.195;
+      const markerSize = markerDiameterInSourcePixels * coverScale;
+
+      hotspot.style.left = `${x}px`;
+      hotspot.style.top = `${y}px`;
+      hotspot.style.setProperty("--marker-size", `${markerSize}px`);
+    }
+
+    if (backgroundImage.complete) positionBallOnBackground();
+    else backgroundImage.addEventListener("load", positionBallOnBackground, { once: true });
+
+    // Recalculate on viewport, hero-size, and image-layout changes.
+    window.addEventListener("resize", positionBallOnBackground);
+    if ("ResizeObserver" in window) {
+      const heroResizeObserver = new ResizeObserver(positionBallOnBackground);
+      heroResizeObserver.observe(hero);
+    }
+
+    // Show a custom CLICK HERE label beside the pointer only over the ball.
+    hotspot.addEventListener("pointerenter", (event) => {
+      if (event.pointerType === "mouse") clickCursor.classList.add("is-visible");
+    });
+    hotspot.addEventListener("pointermove", (event) => {
+      if (event.pointerType !== "mouse") return;
+      clickCursor.style.left = `${event.clientX}px`;
+      clickCursor.style.top = `${event.clientY}px`;
+    });
+    hotspot.addEventListener("pointerleave", () => {
+      clickCursor.classList.remove("is-visible");
+    });
+
+    const popup = document.getElementById("popup");
+    const closeButton = document.getElementById("closePopup");
+    const countdownDisplay = document.getElementById("signalCountdown");
+    const signalModal = document.getElementById("signalModal");
+    const lockScreen = document.getElementById("lockScreen");
+    const unlockButton = document.getElementById("unlockButton");
+    const confirmUnlock = document.getElementById("confirmUnlock");
+    const unlockSweep = document.getElementById("unlockSweep");
+
+    // EDIT YOUR PREFILLED TWEET TEXT HERE.
+    const TWEET_TEXT = "I just got tipped off about CORNER KICK by @cornerkickcoin, and it's about to make money instantly. ⚽💰\nFollow @cornerkickcoin or visit https://cornerkickcoin.fun to find out more!";
+    const TWEET_INTENT_URL = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(TWEET_TEXT);
+
+    unlockButton.addEventListener("click", () => {
+      // Opens X's composer with your custom message prefilled.
+      window.open(TWEET_INTENT_URL, "_blank", "noopener,noreferrer");
+      lockScreen.classList.add("tweet-opened");
+      confirmUnlock.focus();
+    });
+
+    confirmUnlock.addEventListener("click", () => {
+      // This is a user confirmation, not automatic verification by X.
+      signalModal.classList.remove("is-locked");
+      lockScreen.classList.add("is-unlocked");
+      // Start the repeating popup2 sweep only after the user confirms unlock.
+      unlockSweep.classList.remove("is-running");
+      void unlockSweep.offsetWidth;
+      unlockSweep.classList.add("is-running");
+      window.setTimeout(() => { lockScreen.hidden = true; }, 400);
+    });
+
+    // Derive the countdown from the fixed launch timestamp. This means a page
+    // refresh, maintenance or redeployment will not reset the timer.
+    // Because every visitor uses the same timestamp, the countdown is synchronized.
+    const COUNTDOWN_CYCLE_MS = COUNTDOWN_CYCLE_HOURS * 60 * 60 * 1000;
+
+    function renderCountdown() {
+      const elapsed = Math.max(0, Date.now() - COUNTDOWN_LAUNCH_TIMESTAMP);
+      const elapsedInCycle = elapsed % COUNTDOWN_CYCLE_MS;
+      const remainingMs = COUNTDOWN_CYCLE_MS - elapsedInCycle;
+      const totalSeconds = Math.ceil(remainingMs / 1000);
+
+      const hours = Math.floor(totalSeconds / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+
+      countdownDisplay.textContent = [hours, minutes, seconds]
+        .map(value => String(value).padStart(2, "0")).join(":");
+    }
+
+    renderCountdown();
+    setInterval(renderCountdown, 250);
+
+    function openPopup() {
+      signalModal.classList.add("is-locked");
+      lockScreen.hidden = false;
+      lockScreen.classList.remove("is-unlocked", "tweet-opened");
+      popup.classList.add("is-open");
+      popup.setAttribute("aria-hidden", "false");
+      closeButton.focus();
+    }
+    function closePopup() {
+      unlockSweep.classList.remove("is-running");
+      popup.classList.remove("is-open");
+      popup.setAttribute("aria-hidden", "true");
+      hotspot.focus();
+    }
+
+    hotspot.addEventListener("click", openPopup);
+    closeButton.addEventListener("click", closePopup);
+    popup.addEventListener("click", (event) => {
+      if (event.target === popup) closePopup();
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && popup.classList.contains("is-open")) closePopup();
+    });
+  </script>
+</body>
+</html>
